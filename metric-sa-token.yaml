@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: metrics-server-token
+  namespace: kube-system
+  annotations:
+    kubernetes.io/service-account.name: metrics-server
+type: kubernetes.io/service-account-token

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vnf001
+spec:
+  selector:
+    matchLabels:
+      app: nginx-1
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-1
+    spec:
+      containers:
+      - name: busybox
+        image: busybox:1.36.1
+        ports:
+        - containerPort: 80
+        command: ['sh', '-c', "printenv MYSQL_USER MYSQL_PASSWD MYSQL_SERVER; sleep 2d"]
+        env:
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef: 
+              name: secret001
+              key: username
+        - name: MYSQL_PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: secret001
+              key: password
+        - name: MYSQL_SERVER
+          valueFrom:
+            configMapKeyRef:
+              name: configmap001
+              key: DB_HOST
+              

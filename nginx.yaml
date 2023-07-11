@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: test
+  name: nginx-tolerations
+spec:
+  containers:
+  - image: nginx:1.21
+    name: nginx
+    ports:
+    - containerPort: 80
+  tolerations:
+  - effect: NoExecute
+    operator: Exists
+  nodeName: master-1

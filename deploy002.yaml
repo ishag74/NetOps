@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vnf002
+spec:
+  selector:
+    matchLabels:
+      app: nginx-2
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nginx-2
+    spec:
+      containers:
+      - name: busybox001
+        image: busybox:1.36.1
+        ports:
+        - containerPort: 80
+        command: ['sh', '-c', "printenv MYSQL_USER MYSQL_PASSWD MYSQL_SERVER; sleep 2d"]
+        volumeMounts:
+        - name: db-config
+          mountPath: /var/lib/mysql
+        - name: db-secret
+          mountPath: /usr/share
+      volumes:
+      - name: db-config
+        configMap:
+          name: configmap002
+      - name: db-secret
+        secret: 
+          secretName: secret002
